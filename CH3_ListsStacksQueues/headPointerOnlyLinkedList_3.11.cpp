@@ -72,13 +72,53 @@ bool HeadLinked::addIfNotContained(int x){
 	return true;
 }
 
+bool HeadLinked::removeIfContained(int x){
+	node * prev = nullptr;
+	node * curr = head;
+	if(head->data == x && head->next == nullptr){
+		delete head;
+		head = nullptr;
+		return true;
+	}
+	while(curr != nullptr){
+		if(curr->data == x){
+			if(prev == nullptr && curr->next != nullptr){
+				head = curr->next;
+				delete curr;
+				return true;
+			}
+			else if (prev != nullptr && curr->next != nullptr){
+				prev->next = curr->next;
+				delete curr;
+				return true;
+			}
+			else if(prev != nullptr && curr->next == nullptr){
+				delete curr;
+				return true;
+			}
+		}
+
+		if(curr->next == nullptr)
+			break;
+		prev = curr;
+		curr = curr->next;
+	}
+
+	return false;
+
+}
+
 int main(){
 	HeadLinked test;
 	test.addIfNotContained(2);
-	test.addIfNotContained(3);
-	test.addIfNotContained(4);
-	test.addIfNotContained(3);
+	// test.addIfNotContained(3);
+	// test.addIfNotContained(4);
+	// test.addIfNotContained(3);
 
-	std::cout << "size: " << test.isContained(3)<< std::endl;
+	std::cout << "size: " << test.sizeOf()<< std::endl;
+
+	test.removeIfContained(2);
+	std::cout << "size: " << test.sizeOf()<< std::endl;
+
 	return 0;
 }
