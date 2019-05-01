@@ -1,39 +1,37 @@
 #include <iostream>
 
+template <typename T>
 struct node
 {
-	int data;
-	 node *next;
+	T data;
+	node<T> *next;
 };
 
+template <typename T>
 class HeadLinked{
 private:
-	node* head;
+	node<T>* head;
 	int len;
 
 public:
 	HeadLinked();
-	int sizeOf();
+	T sizeOf();
 	void print();
-	bool isContained(int x);
-	bool addIfNotContained(int x);
-	bool removeIfContained(int x);
+	bool isContained(T x);
+	bool addIfNotContained(T x);
+	bool removeIfContained(T x);
 };
-
-HeadLinked::HeadLinked(){
+template <typename T>
+HeadLinked<T>::HeadLinked(){
 	head = nullptr;
 }
-int HeadLinked::sizeOf(){
-	int len = 0;
-	node * curr = head;
-	while(curr != nullptr){
-		len++;
-		curr = curr->next;
-	}
-	return len;
+template <typename T>
+T HeadLinked<T>::sizeOf(){
+	return this->len;
 }
-bool HeadLinked::isContained(int x){
-	node* curr = head;
+template <typename T>
+bool HeadLinked<T>::isContained(T x){
+	node<T> * curr = head;
 
 	while(curr != nullptr){
 		if(curr->data == x){
@@ -46,9 +44,9 @@ bool HeadLinked::isContained(int x){
 	}
 	return false;
 }
-
-bool HeadLinked::addIfNotContained(int x){
-	node* curr = head;
+template <typename T>
+bool HeadLinked<T>::addIfNotContained(T x){
+	node<T> * curr = head;
 	// This code is duplicated from isContained to prevent having two loops
 	// A loop in isContains and a loop to find the end of the list]
 	while(curr != nullptr){
@@ -62,40 +60,39 @@ bool HeadLinked::addIfNotContained(int x){
 	}
 
 	
-	node* temp= new node;
+	node<T> * temp= new node<T>;
 	temp->data = x;
 	if(head == nullptr){
 		head = temp;
 	}else{
 		curr->next = temp;		
 	}
+	this->len++;
 	return true;
 }
 
-bool HeadLinked::removeIfContained(int x){
-	node * prev = nullptr;
-	node * curr = head;
+template <typename T>
+bool HeadLinked<T>::removeIfContained(T x){
+	node<T> * prev = nullptr;
+	node<T> * curr = head;
 	if(head->data == x && head->next == nullptr){
 		delete head;
 		head = nullptr;
+		this->len--;
+
 		return true;
 	}
 	while(curr != nullptr){
 		if(curr->data == x){
 			if(prev == nullptr && curr->next != nullptr){
 				head = curr->next;
-				delete curr;
-				return true;
 			}
 			else if (prev != nullptr && curr->next != nullptr){
 				prev->next = curr->next;
-				delete curr;
-				return true;
 			}
-			else if(prev != nullptr && curr->next == nullptr){
-				delete curr;
-				return true;
-			}
+			this->len--;
+			delete curr;
+			return true;
 		}
 
 		if(curr->next == nullptr)
@@ -109,11 +106,11 @@ bool HeadLinked::removeIfContained(int x){
 }
 
 int main(){
-	HeadLinked test;
+	HeadLinked<int> test;
 	test.addIfNotContained(2);
-	// test.addIfNotContained(3);
-	// test.addIfNotContained(4);
-	// test.addIfNotContained(3);
+	test.addIfNotContained(3);
+	test.addIfNotContained(4);
+	test.addIfNotContained(3);
 
 	std::cout << "size: " << test.sizeOf()<< std::endl;
 
