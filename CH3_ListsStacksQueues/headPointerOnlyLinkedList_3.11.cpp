@@ -44,6 +44,19 @@ bool HeadLinked<T>::isContained(T x){
 	}
 	return false;
 }
+
+template <typename T>
+void HeadLinked<T>::print(){
+	node<T> * curr = head;
+	if(head == nullptr)
+		return;
+	std::cout << head->data << std::endl;
+	while(curr->next != nullptr){
+		std::cout << curr->data << std::endl;
+		curr = curr->next;
+	}
+}
+
 template <typename T>
 bool HeadLinked<T>::addIfNotContained(T x){
 	node<T> * curr = head;
@@ -109,13 +122,13 @@ int main(){
 	HeadLinked<int> test;
 	test.addIfNotContained(2);
 	test.addIfNotContained(3);
-	test.addIfNotContained(4);
-	test.addIfNotContained(3);
+	// test.addIfNotContained(4);
+	// test.addIfNotContained(3);
 
-	std::cout << "size: " << test.sizeOf()<< std::endl;
-
-	test.removeIfContained(2);
-	std::cout << "size: " << test.sizeOf()<< std::endl;
+	// std::cout << "size: " << test.sizeOf()<< std::endl;
+	test.print();
+	// test.removeIfContained(2);
+	// std::cout << "size: " << test.sizeOf()<< std::endl;
 
 	return 0;
 }
